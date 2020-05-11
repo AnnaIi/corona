@@ -10,8 +10,8 @@ from flask.json import jsonify
 from config import *
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-db_session.global_init("db/corona.sqlite")
+app.config['SECRET_KEY'] = SECRET_KEY
+db_session.global_init(DB_NAME)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -63,7 +63,8 @@ def reqister():
                                    message="Такой пользователь уже есть")
         user = User(
             email=form.email.data,
-            address=form.address.data
+            address=form.address.data,
+            chatname=form.chatname.data
         )
         if not user.create_address(form.address.data):
             return render_template('register.html', title='Регистрация',
@@ -100,7 +101,7 @@ def points():
             },
             "options": {
                 "preset": "islands#circleIcon",
-                "iconColor": "#ff0000"
+                "iconColor": "#ff0000" if user.is_ill else "#66ff00"
             }
         })
     return jsonify(json_result)

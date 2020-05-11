@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
-<head>
-    <title>Загрузка данных с помощью JQuery и добавление их на карту</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+{% extends "base.html" %}
+
+{% block js %}
 
     <script src="https://yandex.st/jquery/2.2.3/jquery.min.js" type="text/javascript"></script>
     <!--
@@ -19,8 +17,7 @@
             margin: 0;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+{% block content %}
         <div id="YMapsID"></div>
-</body>
-</html>
+{% endblock %}

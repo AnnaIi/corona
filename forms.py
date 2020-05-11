@@ -11,14 +11,10 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Войти')
 
 
-class SignupForm(FlaskForm):
-    email = EmailField('Почта', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    submit = SubmitField('Зарегистрироваться')
-
 class RegisterForm(FlaskForm):
     email = EmailField('Почта', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
     address = StringField('Адрес пользователя', validators=[DataRequired()])
-    submit = SubmitField('Войти')
+    chatname = StringField('Имя в чате', validators=[DataRequired()])
+    submit = SubmitField('Зарегистрироваться')
