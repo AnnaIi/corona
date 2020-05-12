@@ -3,11 +3,13 @@ from data import db_session
 from flask_login import LoginManager
 from forms import *
 from data.users import User
-from flask_login import login_user
+from data.news import News
+from flask_login import login_user, login_required, current_user, logout_user
 from flask import redirect
 from flask import render_template
 from flask.json import jsonify
 from config import *
+from flask import request
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
@@ -77,6 +79,33 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
+@app.route('/news', methods=['GET'])
+def news():
+    session = db_session.create_session()
+    news = session.query(News).order_by(News.created_date.desc())
+    user_id = request.args.get('user_id')
+    if user_id:
+        news = news.filter(News.user_id == user_id)
+    return render_template('news_list.html', title='Новости', news=news)
+
+
+@app.route('/news_add', methods=['GET', 'POST'])
+@login_required
+def news_add():
+    form = NewsForm()
+    if form.validate_on_submit():
+        session = db_session.create_session()
+        news = News(
+            title=form.title.data,
+            content=form.content.data,
+            user_id=current_user.id
+        )
+        session.add(news)
+        session.commit()
+        return redirect('/login')
+    return render_template('news_add.html', title='Добавить новость', form=form)
+
+
 @app.route('/api/points', methods=['GET', ])
 def points():
     session = db_session.create_session()
@@ -96,7 +125,7 @@ def points():
                 ]
             },
             "properties": {
-                "balloonContent": f'<a href="/profile?id={user.id}">{user.address}</a>',
+                "balloonContent": f'<a href="/news?id={user.id}">{user.address}</a>',
                 "hintContent": user.email
             },
             "options": {
@@ -105,6 +134,13 @@ def points():
             }
         })
     return jsonify(json_result)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
 
 
 if __name__ == '__main__':

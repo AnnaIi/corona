@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Новости</h1>
+    {% if current_user.is_authenticated %}
+        <p><a href="/news_add">Добавить новость</a></p>
+    {% endif %}
+    {% for news_ in news %}
+        <p>
+        <h3>{{ news_.created_date }} {{ news_.title }}</h3>
+        <p>{{ news_.content }}</p>
+        </p>
+    {% endfor %}
+{% endblock %}
