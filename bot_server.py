@@ -15,7 +15,7 @@ class CoronaCommandBot(commands.Cog):
         self.session = db_session.create_session()
 
     @commands.command(name='ill')
-    async def roll_dice(self, ctx):
+    async def ill(self, ctx):
         name = str(ctx.author).split('#')[0]
         user = self.session.query(User).filter(User.chatname == name).first()
         if not user:
@@ -26,7 +26,7 @@ class CoronaCommandBot(commands.Cog):
             await ctx.send("Очень жаль, выздоравливайте!")
 
     @commands.command(name='heal')
-    async def roll_dice(self, ctx):
+    async def heal(self, ctx):
         name = str(ctx.author).split('#')[0]
         user = self.session.query(User).filter(User.chatname == name).first()
         if not user:
