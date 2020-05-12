@@ -102,7 +102,7 @@ def news_add():
         )
         session.add(news)
         session.commit()
-        return redirect('/login')
+        return redirect('/news')
     return render_template('news_add.html', title='Добавить новость', form=form)
 
 
